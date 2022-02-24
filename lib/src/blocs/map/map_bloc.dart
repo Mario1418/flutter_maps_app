@@ -64,7 +64,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     );
 
     final currentPolylines = Map<String, Polyline>.from(state.polylines);
-    currentPolylines['myRpute'] = myRoute;
+    currentPolylines['myRoute'] = myRoute;
     emit(state.copyWith(polylines: currentPolylines));
   }
 
