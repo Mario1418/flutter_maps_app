@@ -25,11 +25,19 @@ class BtnSearchBar extends StatelessWidget {
 class _BtnSearchBarBody extends StatelessWidget {
   const _BtnSearchBarBody({Key? key}) : super(key: key);
 
-  void onSearchResults(BuildContext context, SearchResult result) {
+  void onSearchResults(BuildContext context, SearchResult result) async {
     final searchBloc = BlocProvider.of<SearchBloc>(context);
+    final locationBloc = BlocProvider.of<LocationBloc>(context);
+    final mapBloc = BlocProvider.of<MapBloc>(context);
+
     if (result.manual == true) {
       searchBloc.add(OnActivateManualMarkerEvent());
       return;
+    }
+    if (result.position != null) {
+      final destination = await searchBloc.gerCoorsStartToEnd(
+          locationBloc.state.lastKnownLocation!, result.position!);
+      await mapBloc.drawRoutePolyline(destination);
     }
   }
 
